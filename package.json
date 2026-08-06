@@ -1,0 +1,41 @@
+{
+  "name": "mogi-3-rag-ai",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "db:setup": "dotenv -e .env.local -- tsx scripts/setup-db.ts",
+    "db:push": "dotenv -e .env.local -- drizzle-kit push",
+    "gen:dummy-pdf": "tsx scripts/generate-dummy-pdf.ts"
+  },
+  "dependencies": {
+    "@ai-sdk/gateway": "^4.0.43",
+    "@ai-sdk/react": "^4.0.58",
+    "@clerk/nextjs": "^7.6.5",
+    "@neondatabase/serverless": "^1.1.0",
+    "@vercel/blob": "^2.6.1",
+    "ai": "^7.0.55",
+    "drizzle-orm": "^0.45.2",
+    "next": "16.3.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "unpdf": "^1.8.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "dotenv-cli": "^11.0.0",
+    "drizzle-kit": "^0.31.10",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.0",
+    "pdf-lib": "^1.17.1",
+    "tailwindcss": "^4",
+    "tsx": "^4.23.8",
+    "typescript": "^5"
+  }
+}

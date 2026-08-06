@@ -1,0 +1,63 @@
+# 社内文書検索AI (RAG) — MVP
+
+社内マニュアル(PDF)をAIに読み込ませ、チャットで質問すると出典(文書名・ページ)付きで回答するシステムです。
+提案書のMVPスコープ(2週間)に基づく土台実装です。
+
+> **注意**: このリポジトリは公開(public)です。実際の社内マニュアル(機密文書)や本番用のAPIキー・接続情報は
+> 絶対にコミットしないでください。`.env.local` は `.gitignore` 済みです。
+
+## 技術構成
+
+| レイヤー | 選定 |
+|---|---|
+| フレームワーク | Next.js (App Router) + TypeScript |
+| AI | Vercel AI SDK + AI Gateway(生成: Claude Sonnet / 埋め込み: OpenAI text-embedding-3-small) |
+| DB | Neon Postgres (pgvector) |
+| ファイルストレージ | Vercel Blob (private) |
+| 認証 | Clerk(許可ドメインのみサインイン可) |
+| PDF抽出 | unpdf |
+
+## セットアップ
+
+```bash
+npm install
+vercel link            # 初回のみ
+vercel env pull --yes  # .env.local に環境変数を取得
+npm run db:setup       # pgvector拡張を有効化
+npm run db:push        # documents / chunks テーブルを作成
+npm run dev
+```
+
+## 実際のマニュアルを投入する
+
+1. `/sign-in` で許可ドメイン(現在は `example-corp.co.jp` に設定。本番では実ドメインに変更)のメールアドレスでサインイン
+2. `/admin/upload` からPDFファイルとタイトルを入力してアップロード
+   - PDFテキスト抽出 → チャンク分割 → 埋め込み生成 → Neonに保存
+   - 元ファイルはVercel Blob(非公開)に保存
+3. `/` のチャット画面から質問すると、関連チャンクを検索して出典付きで回答
+
+まとめて投入したい場合は `/api/upload` にスクリプトからPOSTするか、管理画面から1件ずつアップロードしてください。
+
+## 動作確認用ダミーデータ
+
+実際のマニュアルが届く前に、E2Eフローを確認できるダミーPDFを生成できます。
+
+```bash
+npm run gen:dummy-pdf   # scripts/dummy-manual.pdf を生成
+```
+
+生成されたPDFを `/admin/upload` からアップロードし、チャットで質問して出典付き回答が返ることを確認してください。
+
+## セキュリティ方針
+
+- アップロードしたPDFの原本は Vercel Blob に `access: 'private'` で保存し、公開URLは発行しない
+- 全ルート(APIを含む)を Clerk 認証必須にし、許可メールドメイン以外はサインアップ/サインイン不可
+- AIの回答は取り込んだ文書の内容のみを根拠とし、根拠がない場合はその旨を明示する設計(ハルシネーション対策)
+- APIキーやDB接続情報は Vercel の環境変数で管理し、リポジトリにはコミットしない
+
+## Phase 2(今回のスコープ外・別見積もり)
+
+- Word / Confluence対応
+- 部署別アクセス制御(`documents.department` カラムは用意済み、未使用)
+- Slack連携
+- 差分更新パイプライン
