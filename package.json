@@ -9,7 +9,8 @@
     "lint": "eslint",
     "db:setup": "dotenv -e .env.local -- tsx scripts/setup-db.ts",
     "db:push": "dotenv -e .env.local -- drizzle-kit push",
-    "gen:dummy-pdf": "tsx scripts/generate-dummy-pdf.ts"
+    "gen:dummy-pdf": "tsx scripts/generate-dummy-pdf.ts",
+    "verify:pipeline": "dotenv -e .env.local -- tsx scripts/verify-pipeline.ts"
   },
   "dependencies": {
     "@ai-sdk/gateway": "^4.0.43",
