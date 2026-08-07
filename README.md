@@ -61,3 +61,13 @@ npm run gen:dummy-pdf   # scripts/dummy-manual.pdf を生成
 - 部署別アクセス制御(`documents.department` カラムは用意済み、未使用)
 - Slack連携
 - 差分更新パイプライン
+
+## 本番運用に向けた検討事項(AIモデルの接続方法)
+
+現在は検証用にVercel AI Gateway経由(生成: Claude Sonnet / 埋め込み: OpenAI)でモデルを呼び出しており、
+無料枠には利用制限(レート制限)があります。50人規模等の本番運用に進める際は、以下のいずれかで対応してください。
+
+1. **Vercel AI Gatewayに有料クレジットを追加**(コード変更なし、最も手軽)
+2. **会社名義でAnthropic/OpenAIに直接APIキーを発行し接続**(請求の所有権・セキュリティ審査・Vercelへの依存排除が目的の場合)
+
+2の場合の切り替え方法・コード例は知見リポジトリを参照: `dev-pattern/ai-gateway-vs-direct-provider-api-for-scale.md`
