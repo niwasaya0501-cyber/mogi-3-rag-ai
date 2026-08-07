@@ -1,0 +1,59 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "agent",
+            "if": "Edit(**/app/api/**)",
+            "prompt": "あなたはセキュリティレビュー専門のサブエージェントです。次のツール呼び出し情報(JSON)を確認してください: $ARGUMENTS\n\n手順:\n1. tool_input.file_path (無ければ tool_response.filePath) から変更されたファイルパスを特定する\n2. そのファイルを読み、認証(authentication)/認可(authorization)のチェックが正しく行われているか確認する(例: Clerkのauth()呼び出し、セッション検証、許可ドメイン/ユーザーの制限など)\n3. 同じリポジトリ内の他のAPIルートやミドルウェアも必要に応じて読み、認証なしでアクセスできるエンドポイントが無いか横断的に確認する\n4. 最後に必ず次のJSONのみを出力すること(他のテキストは一切出力しない):\n   - 問題が無ければ: {\"systemMessage\": \"[security-hook] <ファイルパス>: 認証チェックOK、問題は見つかりませんでした\"}\n   - 問題があれば: {\"systemMessage\": \"[security-hook] <ファイルパス>: 要確認の問題があります\", \"decision\": \"block\", \"reason\": \"<具体的な問題点と該当箇所>\"}",
+            "model": "claude-sonnet-5",
+            "timeout": 150,
+            "statusMessage": "認証/APIのセキュリティレビュー実行中..."
+          },
+          {
+            "type": "agent",
+            "if": "Write(**/app/api/**)",
+            "prompt": "あなたはセキュリティレビュー専門のサブエージェントです。次のツール呼び出し情報(JSON)を確認してください: $ARGUMENTS\n\n手順:\n1. tool_input.file_path (無ければ tool_response.filePath) から変更されたファイルパスを特定する\n2. そのファイルを読み、認証(authentication)/認可(authorization)のチェックが正しく行われているか確認する(例: Clerkのauth()呼び出し、セッション検証、許可ドメイン/ユーザーの制限など)\n3. 同じリポジトリ内の他のAPIルートやミドルウェアも必要に応じて読み、認証なしでアクセスできるエンドポイントが無いか横断的に確認する\n4. 最後に必ず次のJSONのみを出力すること(他のテキストは一切出力しない):\n   - 問題が無ければ: {\"systemMessage\": \"[security-hook] <ファイルパス>: 認証チェックOK、問題は見つかりませんでした\"}\n   - 問題があれば: {\"systemMessage\": \"[security-hook] <ファイルパス>: 要確認の問題があります\", \"decision\": \"block\", \"reason\": \"<具体的な問題点と該当箇所>\"}",
+            "model": "claude-sonnet-5",
+            "timeout": 150,
+            "statusMessage": "認証/APIのセキュリティレビュー実行中..."
+          },
+          {
+            "type": "agent",
+            "if": "Edit(**/middleware.*)",
+            "prompt": "あなたはセキュリティレビュー専門のサブエージェントです。次のツール呼び出し情報(JSON)を確認してください: $ARGUMENTS\n\n手順:\n1. tool_input.file_path (無ければ tool_response.filePath) から変更されたファイルパスを特定する\n2. そのファイル(ミドルウェア)を読み、認証/ドメイン制限などのガードロジックが正しく適用されているか確認する\n3. どのルートがこのミドルウェアの対象外(matcher設定など)になっているかも確認し、意図せず保護が外れているルートが無いかチェックする\n4. 最後に必ず次のJSONのみを出力すること(他のテキストは一切出力しない):\n   - 問題が無ければ: {\"systemMessage\": \"[security-hook] <ファイルパス>: 認証チェックOK、問題は見つかりませんでした\"}\n   - 問題があれば: {\"systemMessage\": \"[security-hook] <ファイルパス>: 要確認の問題があります\", \"decision\": \"block\", \"reason\": \"<具体的な問題点と該当箇所>\"}",
+            "model": "claude-sonnet-5",
+            "timeout": 150,
+            "statusMessage": "認証/APIのセキュリティレビュー実行中..."
+          },
+          {
+            "type": "agent",
+            "if": "Write(**/middleware.*)",
+            "prompt": "あなたはセキュリティレビュー専門のサブエージェントです。次のツール呼び出し情報(JSON)を確認してください: $ARGUMENTS\n\n手順:\n1. tool_input.file_path (無ければ tool_response.filePath) から変更されたファイルパスを特定する\n2. そのファイル(ミドルウェア)を読み、認証/ドメイン制限などのガードロジックが正しく適用されているか確認する\n3. どのルートがこのミドルウェアの対象外(matcher設定など)になっているかも確認し、意図せず保護が外れているルートが無いかチェックする\n4. 最後に必ず次のJSONのみを出力すること(他のテキストは一切出力しない):\n   - 問題が無ければ: {\"systemMessage\": \"[security-hook] <ファイルパス>: 認証チェックOK、問題は見つかりませんでした\"}\n   - 問題があれば: {\"systemMessage\": \"[security-hook] <ファイルパス>: 要確認の問題があります\", \"decision\": \"block\", \"reason\": \"<具体的な問題点と該当箇所>\"}",
+            "model": "claude-sonnet-5",
+            "timeout": 150,
+            "statusMessage": "認証/APIのセキュリティレビュー実行中..."
+          },
+          {
+            "type": "agent",
+            "if": "Edit(**/lib/**/*auth*)",
+            "prompt": "あなたはセキュリティレビュー専門のサブエージェントです。次のツール呼び出し情報(JSON)を確認してください: $ARGUMENTS\n\n手順:\n1. tool_input.file_path (無ければ tool_response.filePath) から変更されたファイルパスを特定する\n2. そのファイルを読み、認証(authentication)/認可(authorization)のロジックに問題が無いか確認する\n3. 同じリポジトリ内の他のAPIルートやミドルウェアも必要に応じて読み、認証なしでアクセスできるエンドポイントが無いか横断的に確認する\n4. 最後に必ず次のJSONのみを出力すること(他のテキストは一切出力しない):\n   - 問題が無ければ: {\"systemMessage\": \"[security-hook] <ファイルパス>: 認証チェックOK、問題は見つかりませんでした\"}\n   - 問題があれば: {\"systemMessage\": \"[security-hook] <ファイルパス>: 要確認の問題があります\", \"decision\": \"block\", \"reason\": \"<具体的な問題点と該当箇所>\"}",
+            "model": "claude-sonnet-5",
+            "timeout": 150,
+            "statusMessage": "認証/APIのセキュリティレビュー実行中..."
+          },
+          {
+            "type": "agent",
+            "if": "Write(**/lib/**/*auth*)",
+            "prompt": "あなたはセキュリティレビュー専門のサブエージェントです。次のツール呼び出し情報(JSON)を確認してください: $ARGUMENTS\n\n手順:\n1. tool_input.file_path (無ければ tool_response.filePath) から変更されたファイルパスを特定する\n2. そのファイルを読み、認証(authentication)/認可(authorization)のロジックに問題が無いか確認する\n3. 同じリポジトリ内の他のAPIルートやミドルウェアも必要に応じて読み、認証なしでアクセスできるエンドポイントが無いか横断的に確認する\n4. 最後に必ず次のJSONのみを出力すること(他のテキストは一切出力しない):\n   - 問題が無ければ: {\"systemMessage\": \"[security-hook] <ファイルパス>: 認証チェックOK、問題は見つかりませんでした\"}\n   - 問題があれば: {\"systemMessage\": \"[security-hook] <ファイルパス>: 要確認の問題があります\", \"decision\": \"block\", \"reason\": \"<具体的な問題点と該当箇所>\"}",
+            "model": "claude-sonnet-5",
+            "timeout": 150,
+            "statusMessage": "認証/APIのセキュリティレビュー実行中..."
+          }
+        ]
+      }
+    ]
+  }
+}
