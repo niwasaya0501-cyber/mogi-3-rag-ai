@@ -7,7 +7,7 @@ import { searchRelevantChunks } from "@/lib/search";
 
 export const maxDuration = 60;
 
-const CHAT_MODEL = "anthropic/claude-sonnet-5";
+const CHAT_MODEL = "openai/gpt-4o-mini";
 
 function buildSystemPrompt(context: string) {
   return [
