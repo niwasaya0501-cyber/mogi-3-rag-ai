@@ -4,7 +4,7 @@ import { useChat } from "@ai-sdk/react";
 import { useState } from "react";
 
 export default function ChatPage() {
-  const { messages, sendMessage, status } = useChat();
+  const { messages, sendMessage, status, error } = useChat();
   const [input, setInput] = useState("");
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -40,6 +40,11 @@ export default function ChatPage() {
         ))}
         {status === "streaming" && (
           <p className="text-sm text-gray-400">回答を生成中...</p>
+        )}
+        {error && (
+          <p className="mr-auto max-w-[80%] rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+            回答の取得に失敗しました。時間をおいて再度お試しください。
+          </p>
         )}
       </div>
 
